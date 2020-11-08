@@ -8,16 +8,45 @@ var temps=[];
 var icons=[];
 var dates=[];
 var humidity=[];
+var storedValues=[];
 var countFive = 0;
 var cw = $("#current-weather");
+
+if(localStorage.getItem("cities")) {
+    storedValues=JSON.parse(localStorage.getItem("cities"));
+
+    //populate already stored cities to teh cities column
+    for (var i=0; i<storedValues.length; i++){
+        $("#cities").append("<p class=\"card\">" + storedValues[i] + "</p>");
+    }
+}
 
 //collect the user input
 $("#search").on("click", function(){
     loc=$("#inputCity").val();
     queryURL="http://api.openweathermap.org/data/2.5/weather?q=" + loc + "&appid=" + apiKey;
 
+    // //check local storage for previous values
+    // if(localStorage.getItem("cities")) {
+    //     storedValues=JSON.parse(localStorage.getItem("cities"));
+
+    //     //populate already stored cities to teh cities column
+    //     for (var i=0; i<storedValues.length; i++){
+    //         $("#cities").append(storedValues[i]);
+    //     }
+    // }
+        
+    // //check string for duplicate value
+    // for (var i=0; i<storedValues.length; i++){
+    //     if(loc===storedValues[i]){
+    //         break;
+    //     }
+    // }
+        
+    storedValues[storedValues.length]=loc;
+    console.log(storedValues);
     //put entry into local storage
-    
+    localStorage.setItem("cities", JSON.stringify(storedValues));
 
     weatherCall(queryURL);
 });
@@ -33,7 +62,6 @@ $.ajax({
     url: qURL,
     method: "GET"
   }).then(function(response) {
-    console.log(response)
     let queryUVI="http://api.openweathermap.org/data/2.5/uvi?lat=" + response["coord"]["lat"] + "&lon=" + response["coord"]["lon"] + "&appid=" + apiKey;
     
     var icon=response["weather"][0]["icon"];
@@ -47,7 +75,7 @@ $.ajax({
         uviValue=UVI["value"];
 
         //CityName + Icon + Date of current weather
-        cw.html("<h1>" + response["name"] + "</h1>");
+        cw.html("<h2>" + response["name"] + "</h2>");
         //temperature
         cw.append("<br>").append("Temp: " + KtoF(response["main"]["temp"]).toFixed(2) + "<img src=" + currentIcon + ">" );
         //humidity
@@ -62,7 +90,6 @@ $.ajax({
         url:"https://api.openweathermap.org/data/2.5/forecast?q=" + loc + "&appid=" + apiKey,
         method: "GET"
     }).then(function(forecast) {
-        console.log("high/low ajax");
         //get high and low temp for the day
         //loop through 5day @ 3hour forecast
         for (var i=0; i<forecast["list"].length; i++){
@@ -94,7 +121,7 @@ $.ajax({
             url: forecastURL,
             method: "GET"
         }).then(function(forecast) {
-            console.log("forecast ajax");
+            
             for (var i=0; i<5; i++){
                 //grab dates in an array
                 temps[i]=forecast["daily"][i]["temp"]["day"];
