@@ -1,6 +1,7 @@
 var apiKey="595a35fe210a614c524dd39d31768f5a";
 var loc="San Diego";
 var queryURL;
+var uviValue;
 var tHigh=[];
 var tLow=[];
 var temps=[];
@@ -11,10 +12,12 @@ var countFive = 0;
 var cw = $("#current-weather");
 
 //collect the user input
-
 $("#search").on("click", function(){
     loc=$("#inputCity").val();
     queryURL="http://api.openweathermap.org/data/2.5/weather?q=" + loc + "&appid=" + apiKey;
+
+    //put entry into local storage
+    
 
     weatherCall(queryURL);
 });
@@ -30,29 +33,31 @@ $.ajax({
     url: qURL,
     method: "GET"
   }).then(function(response) {
-    console.log("First ajax")
+    console.log(response)
     let queryUVI="http://api.openweathermap.org/data/2.5/uvi?lat=" + response["coord"]["lat"] + "&lon=" + response["coord"]["lon"] + "&appid=" + apiKey;
-    let uviValue;
-
+    
+    var icon=response["weather"][0]["icon"];
+    var currentIcon="http://openweathermap.org/img/wn/" + icon + ".png"
+    
+    //getting the UVI and appending current weather to div
     $.ajax({
         url: queryUVI,
         method: "GET"
       }).then(function(UVI) {
-        console.log("UVI ajax");
         uviValue=UVI["value"];
+
+        //CityName + Icon + Date of current weather
+        cw.html("<h1>" + response["name"] + "</h1>");
+        //temperature
+        cw.append("<br>").append("Temp: " + KtoF(response["main"]["temp"]).toFixed(2) + "<img src=" + currentIcon + ">" );
+        //humidity
+        cw.append("<br>").append("Humidity: " + response["main"]["humidity"]); 
+        //windspeed
+        cw.append("<br>").append("Wind speed: " + response["wind"]["speed"]);
+        //UV index
+        cw.append("<br>").append("UVI: " + uviValue);
       });
     
-    //CityName + Icon + Date of current weather
-    cw.text(response["name"]);
-    //temperature
-    cw.append("<br>").append(KtoF(response["main"]["temp"]).toFixed(2));
-    //humidity
-    cw.append("<br>").append(response["main"]["humidity"]); 
-    //windspeed
-    cw.append("<br>").append(response["wind"]["speed"]);
-    //UV index
-    cw.append("<br>").append(uviValue);
-
     $.ajax({
         url:"https://api.openweathermap.org/data/2.5/forecast?q=" + loc + "&appid=" + apiKey,
         method: "GET"
@@ -103,7 +108,7 @@ $.ajax({
 
             //clear the forecast
             $("#forecast").empty();
-            
+
             for (var i=0; i<tHigh.length; i++){
 
                 //url for icons
