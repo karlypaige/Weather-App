@@ -25,23 +25,13 @@ if(localStorage.getItem("cities")) {
 $("#search").on("click", function(){
     loc=$("#inputCity").val();
     queryURL="http://api.openweathermap.org/data/2.5/weather?q=" + loc + "&appid=" + apiKey;
-
-    // //check local storage for previous values
-    // if(localStorage.getItem("cities")) {
-    //     storedValues=JSON.parse(localStorage.getItem("cities"));
-
-    //     //populate already stored cities to teh cities column
-    //     for (var i=0; i<storedValues.length; i++){
-    //         $("#cities").append(storedValues[i]);
-    //     }
-    // }
         
-    // //check string for duplicate value
-    // for (var i=0; i<storedValues.length; i++){
-    //     if(loc===storedValues[i]){
-    //         break;
-    //     }
-    // }
+    //check string for duplicate value
+    for (var i=0; i<storedValues.length; i++){
+        if(loc===storedValues[i]){
+            break;
+        }
+    }
         
     storedValues[storedValues.length]=loc;
     console.log(storedValues);
