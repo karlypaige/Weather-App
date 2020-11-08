@@ -29,7 +29,7 @@ $("#search").on("click", function(){
     //check string for duplicate value
     for (var i=0; i<storedValues.length; i++){
         if(loc===storedValues[i]){
-            break;
+            
         }
     }
         
