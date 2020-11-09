@@ -12,14 +12,28 @@ var storedValues=[];
 var countFive = 0;
 var cw = $("#current-weather");
 
-if(localStorage.getItem("cities")) {
-    storedValues=JSON.parse(localStorage.getItem("cities"));
+function callStoredCities(){
+    if(localStorage.getItem("cities")) {
+        storedValues=JSON.parse(localStorage.getItem("cities"));
+        
+        $("#cities").empty();
 
-    //populate already stored cities to teh cities column
-    for (var i=0; i<storedValues.length; i++){
-        $("#cities").append("<p class=\"card\">" + storedValues[i] + "</p>");
+        //populate already stored cities to teh cities column
+        for (var i=0; i<storedValues.length; i++){
+            $("#cities").append("<p class=\"card cities\">" + storedValues[i] + "</p>");
+        }
     }
 }
+
+callStoredCities();
+
+$(".cities").on("click", function(){
+    //get value
+    console.log($(this).text());
+    loc=$(this).text();
+    queryURL="https://api.openweathermap.org/data/2.5/weather?q=" + loc + "&appid=" + apiKey;
+    weatherCall(queryURL);
+})
 
 //collect the user input
 $("#search").on("click", function(){
@@ -38,6 +52,10 @@ $("#search").on("click", function(){
     //put entry into local storage
     localStorage.setItem("cities", JSON.stringify(storedValues));
 
+    // for (var i=0; i<storedValues.length; i++){
+    //     $("#cities").append("<p class=\"card\">" + storedValues[i] + "</p>");
+    // }
+    callStoredCities();
     weatherCall(queryURL);
 });
 
