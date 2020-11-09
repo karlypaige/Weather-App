@@ -65,6 +65,9 @@ function KtoF(K){
 }
 
 function weatherCall(qURL) {
+    //time variable capturing today
+    var now = dayjs();
+    
 //ajax calls url for openweathermap
 $.ajax({
     url: qURL,
@@ -83,9 +86,9 @@ $.ajax({
         uviValue=UVI["value"];
 
         //CityName + Icon + Date of current weather
-        cw.html("<h2>" + response["name"] + "</h2>");
+        cw.html("<h2>" + response["name"] + "(" + now.$M + "/" + now.$D + "/" + now.$y + ")<img src=" + currentIcon + ">" + "</h2>");
         //temperature
-        cw.append("<br>").append("Temp: " + KtoF(response["main"]["temp"]).toFixed(2) + "<img src=" + currentIcon + ">" );
+        cw.append("<br>").append("Temp: " + KtoF(response["main"]["temp"]).toFixed(2) );
         //humidity
         cw.append("<br>").append("Humidity: " + response["main"]["humidity"]); 
         //windspeed
@@ -151,7 +154,7 @@ $.ajax({
                 // console.log("THIS IS WEATHER ICON: " + icon);
 
                 //date
-                let usedate="";
+                let useDate= now.add(i, 'day').$M + "/" + now.add(i, 'day').$D + "/" + now.add(i, 'day').$y + "</br>";
                 //temp + icon
                 let useTemp="Daily temp: " + KtoF(temps[0]).toFixed(2) + "<img src=" + icon + "></br>";
                 //high/low temp
@@ -160,7 +163,7 @@ $.ajax({
                 let useHumid="Humidity: " + humidity[i];
 
                 //diplay the 5 daya forecast
-                $("#forecast").append("<panel class=\"col-lg-2 col-md-12 card\">" + useTemp + useHighLow + useHumid + "</panel>");
+                $("#forecast").append("<panel class=\"col-lg-2 col-md-12 card\">" +useDate+  useTemp + useHighLow + useHumid + "</panel>");
 
             };
 
