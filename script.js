@@ -55,7 +55,7 @@ $.ajax({
     let queryUVI="https://api.openweathermap.org/data/2.5/uvi?lat=" + response["coord"]["lat"] + "&lon=" + response["coord"]["lon"] + "&appid=" + apiKey;
     
     var icon=response["weather"][0]["icon"];
-    var currentIcon="https://openweathermap.org/img/wn/" + icon + ".png"
+    var currentIcon="http://openweathermap.org/img/wn/" + icon + ".png"
     
     //getting the UVI and appending current weather to div
     $.ajax({
