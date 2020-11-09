@@ -154,7 +154,7 @@ $.ajax({
                 // console.log("THIS IS WEATHER ICON: " + icon);
 
                 //date
-                let useDate= now.add(i, 'day').$M + "/" + now.add(i, 'day').$D + "/" + now.add(i, 'day').$y + "</br>";
+                let useDate= now.add(i+1, 'day').$M + "/" + now.add(i+1, 'day').$D + "/" + now.add(i+1, 'day').$y + "</br>";
                 //temp + icon
                 let useTemp="Daily temp: " + KtoF(temps[0]).toFixed(2) + "<img src=" + icon + "></br>";
                 //high/low temp
