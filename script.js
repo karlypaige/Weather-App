@@ -24,7 +24,7 @@ if(localStorage.getItem("cities")) {
 //collect the user input
 $("#search").on("click", function(){
     loc=$("#inputCity").val();
-    queryURL="http://api.openweathermap.org/data/2.5/weather?q=" + loc + "&appid=" + apiKey;
+    queryURL="https://api.openweathermap.org/data/2.5/weather?q=" + loc + "&appid=" + apiKey;
         
     //check string for duplicate value
     for (var i=0; i<storedValues.length; i++){
@@ -52,10 +52,10 @@ $.ajax({
     url: qURL,
     method: "GET"
   }).then(function(response) {
-    let queryUVI="http://api.openweathermap.org/data/2.5/uvi?lat=" + response["coord"]["lat"] + "&lon=" + response["coord"]["lon"] + "&appid=" + apiKey;
+    let queryUVI="https://api.openweathermap.org/data/2.5/uvi?lat=" + response["coord"]["lat"] + "&lon=" + response["coord"]["lon"] + "&appid=" + apiKey;
     
     var icon=response["weather"][0]["icon"];
-    var currentIcon="http://openweathermap.org/img/wn/" + icon + ".png"
+    var currentIcon="https://openweathermap.org/img/wn/" + icon + ".png"
     
     //getting the UVI and appending current weather to div
     $.ajax({
@@ -129,7 +129,7 @@ $.ajax({
             for (var i=0; i<tHigh.length; i++){
 
                 //url for icons
-                let icon = "http://openweathermap.org/img/wn/" + icons[i] + ".png";
+                let icon = "https://openweathermap.org/img/wn/" + icons[i] + ".png";
                 // console.log("THIS IS WEATHER ICON: " + icon);
 
                 //date
